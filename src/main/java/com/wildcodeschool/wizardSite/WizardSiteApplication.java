@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.sql.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 @Controller
 @SpringBootApplication
@@ -21,7 +23,7 @@ public class WizardSiteApplication {
 		SpringApplication.run(WizardSiteApplication.class, args);
 	}
 
-@RequestMapping("/")
+    @RequestMapping("/")
     @ResponseBody
     public String index() throws Exception {
     	Statement stmt=con.createStatement();
@@ -35,7 +37,7 @@ public class WizardSiteApplication {
     }
 
 
- @RequestMapping("/team/{team_id}")
+    @RequestMapping("/team/{team_id}")
     @ResponseBody
     public String hello(@PathVariable int team_id)  throws Exception{
     	Statement stmt=con.createStatement();
@@ -54,7 +56,8 @@ public class WizardSiteApplication {
 			return output;
 
 			}else{
-			return "No such team!";
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such thing");
+    
 		}
 	}
 }
